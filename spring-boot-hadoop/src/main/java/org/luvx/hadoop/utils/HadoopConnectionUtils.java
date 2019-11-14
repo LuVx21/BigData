@@ -7,6 +7,7 @@ import org.luvx.hbase.utils.PropertiesUtils;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -18,13 +19,9 @@ import java.util.Properties;
 @Slf4j
 public class HadoopConnectionUtils {
     public static FileSystem getFileSystem() {
-        Properties props = null;
-        try {
-            props = PropertiesUtils.load("hadoop.properties");
-        } catch (IOException e) {
-            log.error("加载配置文件异常");
-            return null;
-        }
+        Properties props = PropertiesUtils.load("hadoop.properties");
+        Objects.requireNonNull(props, "加载配置文件异常");
+
         String root = props.getProperty("hadoop.root");
         String user = props.getProperty("hadoop.user");
         System.setProperty("hadoop.home.dir", props.getProperty("hadoop.home.dir"));

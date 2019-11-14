@@ -7,6 +7,7 @@ import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -28,12 +29,9 @@ public class HBaseConnectionUtils {
     }
 
     private static Configuration getConfiguration() {
-        Properties props = null;
-        try {
-            props = PropertiesUtils.load("hbase.properties");
-        } catch (IOException e) {
-            log.error("加载配置文件异常");
-        }
+        Properties props = PropertiesUtils.load("hbase.properties");
+        Objects.requireNonNull(props, "加载配置文件异常");
+
         Configuration config = HBaseConfiguration.create();
         config.set("hbase.zookeeper.property.clientPort", props.getProperty("hbase.zookeeper.property.clientPort"));
         config.set("hbase.zookeeper.quorum", props.getProperty("hbase.zookeeper.quorum"));
