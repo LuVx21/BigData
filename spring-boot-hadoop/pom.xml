@@ -89,8 +89,12 @@
             <artifactId>hive-exec</artifactId>
             <version>3.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <version>3.1.2</version>
+        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
