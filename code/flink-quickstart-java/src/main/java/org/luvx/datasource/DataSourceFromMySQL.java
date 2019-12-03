@@ -1,11 +1,13 @@
 package org.luvx.datasource;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import org.luvx.entity.UserBehavior;
 
 import java.sql.*;
 
+@Slf4j
 public class DataSourceFromMySQL extends RichSourceFunction<UserBehavior> {
 
     private Connection        conn;
@@ -13,18 +15,26 @@ public class DataSourceFromMySQL extends RichSourceFunction<UserBehavior> {
 
     @Override
     public void run(SourceContext<UserBehavior> sourceContext) {
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                UserBehavior u = UserBehavior.builder()
-                        .userId(rs.getLong("user_id"))
-                        .itemId(rs.getLong("item_id"))
-                        .categoryId(rs.getInt("category_id"))
-                        .behavior(rs.getString("behavior"))
-                        .timestamp(rs.getLong("timestamp"))
-                        .build();
-                sourceContext.collect(u);
+        for (; ; ) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    UserBehavior u = UserBehavior.builder()
+                            .userId(rs.getLong("user_id"))
+                            .itemId(rs.getLong("item_id"))
+                            .categoryId(rs.getInt("category_id"))
+                            .behavior(rs.getString("behavior"))
+                            .timestamp(rs.getLong("timestamp"))
+                            .build();
+                    sourceContext.collect(u);
+                }
+            } catch (SQLException e) {
+                log.error("sql执行异常");
             }
-        } catch (SQLException e) {
+            try {
+                Thread.sleep(10 * 1000);
+            } catch (InterruptedException e) {
+                log.error("线程中断异常");
+            }
         }
     }
 
@@ -36,7 +46,7 @@ public class DataSourceFromMySQL extends RichSourceFunction<UserBehavior> {
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
         conn = getConnection();
-        String sql = "select * from user_behavior;";
+        String sql = "select * from user_behavior order by user_id;";
         stmt = this.conn.prepareStatement(sql);
     }
 

@@ -22,7 +22,7 @@ create table `user_behavior` (
 `user_id` bigint(20) unsigned not null,
 `item_id` bigint(20) unsigned not null,
 `category_id` bigint(20) unsigned not null,
-`behavior`varchar(5) not null default '',
+`behavior`varchar(32) not null default '',
 `timestamp` bigint(20) unsigned not null
 ) engine=innodb default charset=utf8;
 ```

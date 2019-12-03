@@ -14,11 +14,12 @@ import java.util.Random;
  */
 public class KafkaUtils2 {
 
-    public static final String topic = "flink";
+    public static final String topic  = "flink";
+    private static      long   userId = 1000L;
 
     public static void main(String[] args) throws InterruptedException {
         for (; ; ) {
-            Thread.sleep(5 * 1000);
+            Thread.sleep(10 * 1000);
             send();
         }
     }
@@ -42,7 +43,7 @@ public class KafkaUtils2 {
         int i = r.nextInt(4) % (4);
 
         return UserBehavior.builder()
-                .userId(System.currentTimeMillis() / 1000)
+                .userId(userId++)
                 .itemId(2001L)
                 .categoryId(101)
                 .behavior(a[i])
