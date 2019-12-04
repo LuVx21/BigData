@@ -33,11 +33,11 @@ public class SinkToMySQL extends RichSinkFunction<UserBehavior> {
     @Override
     public void close() throws Exception {
         super.close();
-        if (connection != null) {
-            connection.close();
-        }
         if (stmt != null) {
             stmt.close();
+        }
+        if (connection != null) {
+            connection.close();
         }
     }
 
