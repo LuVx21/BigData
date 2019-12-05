@@ -13,13 +13,17 @@ import org.apache.flink.util.Collector;
  * @Date: 2019/11/27 14:55
  */
 public class WindowResultFunction implements WindowFunction<Long, ItemViewCount, Tuple, TimeWindow> {
-
+    /**
+     * 窗口函数
+     *
+     * @param tuple  窗口的主键，即 itemId
+     * @param window 窗口
+     * @param input  聚合函数，即 count 值
+     * @param out    输出类型是 ItemViewCount
+     * @throws Exception
+     */
     @Override
-    public void apply(
-            Tuple tuple,                    // 窗口的主键，即 itemId
-            TimeWindow window,              // 窗口
-            Iterable<Long> input,           // 聚合函数，即 count 值
-            Collector<ItemViewCount> out)   // 输出类型是 ItemViewCount
+    public void apply(Tuple tuple, TimeWindow window, Iterable<Long> input, Collector<ItemViewCount> out)
             throws Exception {
         Long itemId = ((Tuple1<Long>) tuple).f0;
         Long count = input.iterator().next();

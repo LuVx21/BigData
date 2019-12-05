@@ -1,6 +1,7 @@
 package org.luvx.compute;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.typeutils.TypeExtractor;
 import org.apache.flink.core.fs.Path;
@@ -30,13 +31,16 @@ public class FromFile1 {
     }
 
     private static void compute1(StreamExecutionEnvironment env, String filePath) {
-        DataStreamSource<String> dataStreamSource = env.readTextFile(filePath);
-        dataStreamSource.setParallelism(1);
+        DataStreamSource<String> streamSource = env.readTextFile(filePath);
+        streamSource.setParallelism(1);
 
-        SingleOutputStreamOperator<UserBehavior> operator = dataStreamSource.map(
-                (s) -> {
-                    String[] tokens = s.split("\\W+");
-                    return a(tokens);
+        SingleOutputStreamOperator<UserBehavior> operator = streamSource.map(
+                new MapFunction<String, UserBehavior>() {
+                    @Override
+                    public UserBehavior map(String s) throws Exception {
+                        String[] tokens = s.split("\\W+");
+                        return userBehavior(tokens);
+                    }
                 }
         );
         operator.print();
@@ -44,18 +48,18 @@ public class FromFile1 {
 
     private static void compute2(StreamExecutionEnvironment env, String filePath) {
         TextInputFormat inputFormat = new TextInputFormat(new Path(filePath));
-        DataStreamSource<String> dataStreamSource = env.readFile(
+        DataStreamSource<String> streamSource = env.readFile(
                 inputFormat, filePath, FileProcessingMode.PROCESS_CONTINUOUSLY,
                 100L, TypeExtractor.getInputFormatTypes(inputFormat));
-        dataStreamSource.setParallelism(1);
+        streamSource.setParallelism(1);
 
-        SingleOutputStreamOperator<UserBehavior> operator = dataStreamSource.flatMap(
+        SingleOutputStreamOperator<UserBehavior> operator = streamSource.flatMap(
                 new FlatMapFunction<String, UserBehavior>() {
                     @Override
                     public void flatMap(String s, Collector<UserBehavior> collector) throws Exception {
                         String[] tokens = s.split("\\W+");
                         if (tokens.length > 1) {
-                            collector.collect(a(tokens));
+                            collector.collect(userBehavior(tokens));
                         }
                     }
                 }
@@ -63,7 +67,7 @@ public class FromFile1 {
         operator.print();
     }
 
-    private static UserBehavior a(String[] tokens) {
+    private static UserBehavior userBehavior(String[] tokens) {
         return UserBehavior.builder()
                 .userId(Long.valueOf(tokens[0]))
                 .itemId(Long.valueOf(tokens[1]))

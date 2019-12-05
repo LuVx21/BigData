@@ -22,21 +22,22 @@ public class TopNHotItems extends KeyedProcessFunction<Tuple, ItemViewCount, Str
 
     private final int topSize;
 
+    /**
+     * 用于存储商品与点击数的状态
+     * 待收取同一个窗口的数据后，再触发 TopN 计算
+     */
+    private ListState<ItemViewCount> itemState;
+
     public TopNHotItems(int topSize) {
         this.topSize = topSize;
     }
-
-    /**
-     * 用于存储商品与点击数的状态，待收取同一个窗口的数据后，再触发 TopN 计算
-     */
-    private ListState<ItemViewCount> itemState;
 
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
         // 重载 open 方法，注册状态
         ListStateDescriptor<ItemViewCount> itemViewCountListStateDescriptor =
-                new ListStateDescriptor<ItemViewCount>(
+                new ListStateDescriptor<>(
                         "itemState-state",
                         ItemViewCount.class
                 );
@@ -62,16 +63,16 @@ public class TopNHotItems extends KeyedProcessFunction<Tuple, ItemViewCount, Str
         allItems.sort(Comparator.comparing(ItemViewCount::getViewCount).reversed());
         // 将排名信息格式化成 String
         StringBuilder result = new StringBuilder();
-        result.append("================================== TEST =================================\n");
+        result.append("\n================================== TEST =================================\n");
         result.append("时间: ").append(new Timestamp(timestamp - 1)).append("\n");
         // 遍历点击事件到结果中
-        int realSize = allItems.size() < topSize ? allItems.size() : topSize;
+        int realSize = Math.min(allItems.size(), topSize);
         for (int i = 0; i < realSize; i++) {
             ItemViewCount item = allItems.get(i);
             if (item == null) {
                 continue;
             }
-            result.append("No ").append(i).append(":")
+            result.append("No ").append(i + 1).append(":")
                     .append("    商品 ID=").append(item.getItemId())
                     .append("    游览量=").append(item.getViewCount())
                     .append("\n");

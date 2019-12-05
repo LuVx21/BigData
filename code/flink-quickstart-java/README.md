@@ -13,6 +13,8 @@ mvn archetype:generate \
 nc -l 9000
 ./bin/flink run examples/streaming/SocketWindowWordCount.jar --port 9000
 
+./bin/flink run -c cn.sevenyuan.wordcount.SocketTextStreamWordCount target/flink-quick-start-1.0-SNAPSHOT.jar
+
 
 https://github.com/Vip-Augus/flink-learning-note/
 

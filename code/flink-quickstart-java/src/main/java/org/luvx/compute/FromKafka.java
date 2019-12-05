@@ -14,7 +14,6 @@ import org.apache.flink.util.Collector;
 import org.luvx.entity.UserBehavior;
 import org.luvx.utils.KafkaUtils;
 import org.luvx.utils.KafkaUtils2;
-import org.springframework.beans.BeanUtils;
 
 import java.util.Objects;
 
@@ -49,10 +48,13 @@ public class FromKafka {
     private static void map1(SingleOutputStreamOperator<UserBehavior> stream) {
         SingleOutputStreamOperator<UserBehavior> operator = stream.map(
                 s -> {
-                    UserBehavior t = UserBehavior.builder().build();
-                    BeanUtils.copyProperties(s, t);
-                    t.setTimestamp(s.getTimestamp() / 1000);
-                    return t;
+                    return UserBehavior.builder()
+                            .userId(s.getUserId())
+                            .itemId(s.getItemId())
+                            .categoryId(s.getCategoryId())
+                            .behavior(s.getBehavior())
+                            .timestamp(s.getTimestamp() / 1000)
+                            .build();
                 }
         );
         operator.print();
