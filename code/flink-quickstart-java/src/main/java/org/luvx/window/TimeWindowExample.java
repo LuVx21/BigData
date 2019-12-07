@@ -67,6 +67,7 @@ public class TimeWindowExample {
                         new AllWindowFunction<Log, Long, TimeWindow>() {
                             @Override
                             public void apply(TimeWindow window, Iterable<Log> values, Collector<Long> out) throws Exception {
+                                log.info("----------------- 窗口汇总↓ -----------------");
                                 List<Log> logs = new ArrayList<>();
                                 Iterator<Log> it = values.iterator();
                                 while (it.hasNext()) {
@@ -75,6 +76,7 @@ public class TimeWindowExample {
                                 }
                                 log.info("所有事件:{}", logs);
                                 log.info("窗口时间:{} ~ {}", TimeUtils.epochMilli2Time(window.getStart()), TimeUtils.epochMilli2Time(window.getEnd()));
+                                log.info("----------------- 窗口汇总↑ -----------------");
 
                                 out.collect((long) logs.size());
                             }
