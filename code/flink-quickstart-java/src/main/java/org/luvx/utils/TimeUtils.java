@@ -1,9 +1,8 @@
 package org.luvx.utils;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 
 /**
  * @ClassName: org.luvx.utils
@@ -23,6 +22,56 @@ public class TimeUtils {
         LocalDateTime temp = LocalDateTime.parse(str, TimeUtils.dateTimeFormatter2);
         long time = LocalDateTime.from(temp).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         return time;
+    }
+
+    /**
+     * 本月第一天
+     *
+     * @return
+     */
+    public static LocalDate firstDayOfThisMonth() {
+        LocalDate today = LocalDate.now();
+        return today.with(TemporalAdjusters.firstDayOfMonth());
+    }
+
+    /**
+     * 本月第N天
+     *
+     * @param n
+     * @return
+     */
+    public static LocalDate dayOfThisMonth(int n) {
+        LocalDate today = LocalDate.now();
+        return today.withDayOfMonth(n);
+    }
+
+    /**
+     * 本月最后一天
+     *
+     * @return
+     */
+    public static LocalDate lastDayOfThisMonth() {
+        LocalDate today = LocalDate.now();
+        return today.with(TemporalAdjusters.lastDayOfMonth());
+    }
+
+    /**
+     * 本月第一天的开始时间
+     *
+     * @return
+     */
+    public static LocalDateTime startOfThisMonth() {
+        return LocalDateTime.of(firstDayOfThisMonth(), LocalTime.MIN);
+    }
+
+
+    /**
+     * 本月最后一天的结束时间
+     *
+     * @return
+     */
+    public static LocalDateTime endOfThisMonth() {
+        return LocalDateTime.of(lastDayOfThisMonth(), LocalTime.MAX);
     }
 }
 

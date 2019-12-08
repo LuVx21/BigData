@@ -74,7 +74,7 @@ public class TimeWindowExample {
                                     Log log = it.next();
                                     logs.add(log);
                                 }
-                                log.info("所有事件:{}", logs);
+                                log.info("所有事件({}个事件):{}", logs.size(), logs);
                                 log.info("窗口时间:{} ~ {}", TimeUtils.epochMilli2Time(window.getStart()), TimeUtils.epochMilli2Time(window.getEnd()));
                                 log.info("----------------- 窗口汇总↑ -----------------");
 
