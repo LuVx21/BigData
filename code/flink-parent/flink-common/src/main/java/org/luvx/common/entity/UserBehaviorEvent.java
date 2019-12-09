@@ -19,26 +19,22 @@ public class UserBehaviorEvent {
     /**
      * 用户id
      */
-    private Long userId;
-
+    private Long    userId;
     /**
      * 商品id
      */
-    private Long itemId;
-
+    private Long    itemId;
     /**
      * 商品种类id
      */
     private Integer categoryId;
-
     /**
      * 用户行为
      * pv, buy, cart, fav
      */
-    private String behavior;
-
+    private String  behavior;
     /**
      * 时间戳
      */
-    private Long timestamp;
+    private Long    timestamp;
 }
