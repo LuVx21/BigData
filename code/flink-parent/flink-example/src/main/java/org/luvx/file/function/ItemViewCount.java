@@ -1,4 +1,4 @@
-package org.luvx.function;
+package org.luvx.file.function;
 
 import lombok.Data;
 
@@ -6,7 +6,6 @@ import lombok.Data;
  * @ClassName: org.luvx.entity
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/11/27 14:52
  */
 @Data
 public class ItemViewCount {

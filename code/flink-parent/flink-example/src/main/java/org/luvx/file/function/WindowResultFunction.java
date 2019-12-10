@@ -1,4 +1,4 @@
-package org.luvx.function;
+package org.luvx.file.function;
 
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple1;
@@ -10,8 +10,8 @@ import org.apache.flink.util.Collector;
  * @ClassName: org.luvx.entity
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/11/27 14:55
  */
+@SuppressWarnings("unchecked")
 public class WindowResultFunction implements WindowFunction<Long, ItemViewCount, Tuple, TimeWindow> {
     /**
      * 窗口函数

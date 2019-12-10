@@ -1,13 +1,12 @@
-package org.luvx.function;
+package org.luvx.file.function;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
-import org.luvx.common.entity.UserBehaviorEvent;
+import org.luvx.entity.UserBehaviorEvent;
 
 /**
  * @ClassName: org.luvx.entity
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/11/27 14:54
  */
 public class CountAgg implements AggregateFunction<UserBehaviorEvent, Long, Long> {
     @Override

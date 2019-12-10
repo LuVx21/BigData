@@ -1,75 +1,83 @@
 package org.luvx.file;
 
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.java.io.PojoCsvInputFormat;
-import org.apache.flink.api.java.typeutils.PojoTypeInfo;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.typeutils.TypeExtractor;
 import org.apache.flink.core.fs.Path;
-import org.apache.flink.streaming.api.TimeCharacteristic;
-import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
-import org.apache.flink.streaming.api.windowing.time.Time;
-import org.luvx.common.entity.UserBehaviorEvent;
-import org.luvx.function.CountAgg;
-import org.luvx.function.ItemViewCount;
-import org.luvx.function.TopNHotItems;
-import org.luvx.function.WindowResultFunction;
+import org.apache.flink.streaming.api.functions.source.FileProcessingMode;
+import org.apache.flink.util.Collector;
+import org.luvx.entity.UserBehaviorEvent;
 
-import java.io.File;
 import java.net.URL;
-import java.util.Objects;
 
 /**
- * @ClassName: org.luvx.file
+ * @ClassName: org.luvx
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/12/1 10:39
  */
 public class Main {
-    private static final String LOCAL_LOCATION = "data/UserBehavior.csv";
+    private static final String LOCAL_LOCATION = "data/UserBehaviorTest.txt";
 
     public static void main(String[] args) throws Exception {
-        URL url = Main.class.getClassLoader().getResource(LOCAL_LOCATION);
-        Path filePath = Path.fromLocalFile(new File(url.getPath()));
-        PojoTypeInfo<UserBehaviorEvent> typeInfo = (PojoTypeInfo<UserBehaviorEvent>) TypeExtractor.createTypeInfo(UserBehaviorEvent.class);
-        String[] columns = new String[]{"userId", "itemId", "categoryId", "behavior", "timestamp"};
-        PojoCsvInputFormat<UserBehaviorEvent> format = new PojoCsvInputFormat<>(filePath, typeInfo, columns);
-
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<UserBehaviorEvent> dataSource = env.createInput(format, typeInfo);
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        SingleOutputStreamOperator<UserBehaviorEvent> timeData = dataSource.assignTimestampsAndWatermarks(
-                new AscendingTimestampExtractor<UserBehaviorEvent>() {
+        URL url = Main.class.getClassLoader().getResource(LOCAL_LOCATION);
+        String filePath = url.getPath();
+
+        // compute1(env, filePath);
+        compute2(env, filePath);
+
+        env.execute("compute Hot Items");
+    }
+
+    private static void compute1(StreamExecutionEnvironment env, String filePath) {
+        DataStreamSource<String> streamSource = env.readTextFile(filePath);
+        streamSource.setParallelism(1);
+
+        SingleOutputStreamOperator<UserBehaviorEvent> operator = streamSource.map(
+                new MapFunction<String, UserBehaviorEvent>() {
                     @Override
-                    public long extractAscendingTimestamp(UserBehaviorEvent element) {
-                        return element.getTimestamp() * 1000;
+                    public UserBehaviorEvent map(String s) throws Exception {
+                        String[] tokens = s.split("\\W+");
+                        return userBehavior(tokens);
                     }
                 }
         );
+        operator.print("111");
+    }
 
-        SingleOutputStreamOperator<UserBehaviorEvent> pvData = timeData.filter(
-                new FilterFunction<UserBehaviorEvent>() {
+    private static void compute2(StreamExecutionEnvironment env, String filePath) {
+        TextInputFormat inputFormat = new TextInputFormat(new Path(filePath));
+        DataStreamSource<String> streamSource = env.readFile(
+                inputFormat, filePath, FileProcessingMode.PROCESS_CONTINUOUSLY,
+                100L, TypeExtractor.getInputFormatTypes(inputFormat));
+        streamSource.setParallelism(1);
+
+        SingleOutputStreamOperator<UserBehaviorEvent> operator = streamSource.flatMap(
+                new FlatMapFunction<String, UserBehaviorEvent>() {
                     @Override
-                    public boolean filter(UserBehaviorEvent value) throws Exception {
-                        return Objects.equals("pv", value.getBehavior());
+                    public void flatMap(String s, Collector<UserBehaviorEvent> collector) throws Exception {
+                        String[] tokens = s.split("\\W+");
+                        if (tokens.length > 1) {
+                            collector.collect(userBehavior(tokens));
+                        }
                     }
                 }
         );
+        operator.print("222");
+    }
 
-        SingleOutputStreamOperator<ItemViewCount> windowData = pvData
-                .keyBy("itemId")
-                .timeWindow(Time.minutes(60), Time.minutes(5))
-                .aggregate(new CountAgg(), new WindowResultFunction());
-
-        SingleOutputStreamOperator<String> topItems = windowData
-                .keyBy("windowEnd")
-                .process(new TopNHotItems(4));
-
-        topItems.print();
-
-        env.execute("Test Hot Items Job");
+    private static UserBehaviorEvent userBehavior(String[] tokens) {
+        return UserBehaviorEvent.builder()
+                .userId(Long.valueOf(tokens[0]))
+                .itemId(Long.valueOf(tokens[1]))
+                .categoryId(Integer.valueOf(tokens[2]))
+                .behavior(tokens[3])
+                .timestamp(Long.valueOf(tokens[4]))
+                .build();
     }
 }

@@ -19,7 +19,7 @@
 
         <dependency>
             <groupId>org.luvx</groupId>
-            <artifactId>flink-common</artifactId>
+            <artifactId>flink-entity</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

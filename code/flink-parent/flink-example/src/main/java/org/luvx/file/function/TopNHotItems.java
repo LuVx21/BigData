@@ -1,4 +1,4 @@
-package org.luvx.function;
+package org.luvx.file.function;
 
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
@@ -17,7 +17,6 @@ import java.util.List;
  * @ClassName: org.luvx.entity
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/11/27 14:55
  */
 public class TopNHotItems extends KeyedProcessFunction<Tuple, ItemViewCount, String> {
 
