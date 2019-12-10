@@ -11,17 +11,20 @@
 
     <modules>
         <module>flink-common</module>
+        <module>flink-entity</module>
         <module>flink-example</module>
         <module>flink-cep</module>
         <module>flink-kafka</module>
         <module>flink-hbase</module>
         <module>flink-mysql</module>
+        <module>flink-window</module>
         <module>flink-table</module>
+        <module>flink-sub</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <flink.version>1.8.2</flink.version>
+        <flink.version>1.9.1</flink.version>
         <scala.binary.version>2.11</scala.binary.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -29,14 +32,6 @@
     </properties>
 
     <dependencies>
-
-<!--        <dependency>-->
-<!--            <groupId>org.apache.flink</groupId>-->
-<!--            <artifactId>flink-java</artifactId>-->
-<!--            <version>${flink.version}</version>-->
-<!--            &lt;!&ndash;            <scope>provided</scope>&ndash;&gt;-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
@@ -73,15 +68,8 @@
                 <artifactId>guava</artifactId>
                 <version>27.0.1-jre</version>
             </dependency>
-
-            <!--            <dependency>-->
-            <!--                <groupId>org.apache.kafka</groupId>-->
-            <!--                <artifactId>kafka-clients</artifactId>-->
-            <!--                <version>2.0.1</version>-->
-            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
-
 
     <repositories>
         <repository>
