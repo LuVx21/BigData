@@ -8,7 +8,6 @@ import java.util.Properties;
  * @ClassName: org.luvx.common.utils
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/12/9 16:17
  */
 @Slf4j
 public class KafkaConfigUtils {

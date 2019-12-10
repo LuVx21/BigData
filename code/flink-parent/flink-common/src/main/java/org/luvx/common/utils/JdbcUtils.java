@@ -9,7 +9,6 @@ import java.util.Properties;
  * @ClassName: org.luvx.utils
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/12/9 15:39
  */
 @Slf4j
 public class JdbcUtils {

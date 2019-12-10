@@ -1,4 +1,4 @@
-package org.luvx.common.entity;
+package org.luvx.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
  * @ClassName: org.luvx.entity
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/11/27 14:44
  */
 @NoArgsConstructor
 @AllArgsConstructor

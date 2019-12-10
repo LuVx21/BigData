@@ -1,4 +1,4 @@
-package org.luvx.common.entity;
+package org.luvx.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,6 @@ import org.luvx.common.utils.DateTimeUtils;
  * @ClassName: org.luvx.common.entity
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/12/9 16:14
  */
 @NoArgsConstructor
 @AllArgsConstructor

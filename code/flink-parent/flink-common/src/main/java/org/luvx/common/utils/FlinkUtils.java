@@ -9,7 +9,6 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
  * @ClassName: org.luvx.utils
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/12/9 15:42
  */
 @Slf4j
 public class FlinkUtils {
