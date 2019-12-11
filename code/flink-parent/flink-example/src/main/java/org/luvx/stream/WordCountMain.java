@@ -1,4 +1,4 @@
-package org.luvx.wc;
+package org.luvx.stream;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
