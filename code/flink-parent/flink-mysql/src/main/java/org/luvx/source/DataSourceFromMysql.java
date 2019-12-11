@@ -3,7 +3,7 @@ package org.luvx.source;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
-import org.luvx.common.entity.UserBehaviorEvent;
+import org.luvx.entity.UserBehaviorEvent;
 import org.luvx.common.utils.JdbcUtils;
 
 import java.sql.Connection;
@@ -15,7 +15,6 @@ import java.sql.SQLException;
  * @ClassName: org.luvx.source
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/12/9 16:00
  */
 @Slf4j
 public class DataSourceFromMysql extends RichSourceFunction<UserBehaviorEvent> {

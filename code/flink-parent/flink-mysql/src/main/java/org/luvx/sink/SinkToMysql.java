@@ -2,7 +2,7 @@ package org.luvx.sink;
 
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-import org.luvx.common.entity.UserBehaviorEvent;
+import org.luvx.entity.UserBehaviorEvent;
 import org.luvx.common.utils.JdbcUtils;
 
 import java.sql.Connection;
@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
  * @ClassName: org.luvx.sink
  * @Description:
  * @Author: Ren, Xie
- * @Date: 2019/12/9 16:00
  */
 public class SinkToMysql extends RichSinkFunction<UserBehaviorEvent> {
     private Connection        connection;
