@@ -11,7 +11,7 @@ import org.luvx.source.DataSourceFromMysql;
  * @Description:
  * @Author: Ren, Xie
  */
-public class Main {
+public class Mysql2MysqlMain {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStreamSource<UserBehaviorEvent> stream = env.addSource(new DataSourceFromMysql());

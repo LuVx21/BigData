@@ -14,9 +14,7 @@
         <module>flink-entity</module>
         <module>flink-example</module>
         <module>flink-cep</module>
-        <module>flink-kafka</module>
-        <module>flink-hbase</module>
-        <module>flink-mysql</module>
+        <module>flink-connector</module>
         <module>flink-window</module>
         <module>flink-table</module>
         <module>flink-sub</module>

@@ -1,4 +1,4 @@
-package org.luvx.utils;
+package org.luvx.kafka.utils;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -20,7 +20,7 @@ public class KafkaUtils2 {
 
     public static void main(String[] args) throws InterruptedException {
         for (; ; ) {
-            Thread.sleep(10 * 1000);
+            Thread.sleep(15 * 1000);
             send();
         }
     }
