@@ -25,9 +25,12 @@ public class CheckPointUtil {
     public static final String CHECKPOINT_FS              = "fs";
     public static final String CHECKPOINT_ROCKETSDB       = "rocksdb";
 
+    private static final String path_windows = "file:///D:/data/flink/checkpoint1";
+    private static final String path_linux   = "/data/flink/checkpoint";
+
     public static StreamExecutionEnvironment setCheckpointConfig(StreamExecutionEnvironment env) throws URISyntaxException {
         env.enableCheckpointing(30 * 1000);
-        StateBackend stateBackend = new FsStateBackend(new URI("/data/flink/checkpoint"), 0);
+        StateBackend stateBackend = new FsStateBackend(new URI(path_windows), 0);
         env.setStateBackend(stateBackend);
 
         CheckpointConfig checkpointConfig = env.getCheckpointConfig();
