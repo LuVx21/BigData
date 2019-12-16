@@ -15,6 +15,7 @@
         <dependency>
             <groupId>org.luvx</groupId>
             <artifactId>flink-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

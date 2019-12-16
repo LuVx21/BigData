@@ -15,16 +15,13 @@ nc -l 9000
 
 ./bin/flink run -c cn.sevenyuan.wordcount.SocketTextStreamWordCount target/flink-quick-start-1.0-SNAPSHOT.jar
 
-
-https://github.com/Vip-Augus/flink-learning-note/
-
 ```sql
 drop table if exists `user_behavior`;
 create table `user_behavior` (
-`user_id` bigint(20) unsigned not null,
-`item_id` bigint(20) unsigned not null,
-`category_id` bigint(20) unsigned not null,
+`user_id` int(20) unsigned not null,
+`item_id` int(20) unsigned not null,
+`category_id` int(20) unsigned not null,
 `behavior`varchar(32) not null default '',
-`timestamp` bigint(20) unsigned not null
+`timestamp` int(20) unsigned not null
 ) engine=innodb default charset=utf8;
 ```
