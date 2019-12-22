@@ -1,4 +1,4 @@
-package org.luvx.join.entity;
+package org.luvx.entity.join;
 
 import lombok.Data;
 
@@ -9,7 +9,8 @@ import lombok.Data;
  */
 @Data
 public class Score {
-    private Integer eid;
+    private Integer id;
+    /**student 的 id*/
     private Integer sid;
     private Integer score;
 }

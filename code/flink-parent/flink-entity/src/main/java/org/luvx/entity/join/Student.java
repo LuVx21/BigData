@@ -1,15 +1,14 @@
-package org.luvx.join.entity;
+package org.luvx.entity.join;
 
 import lombok.Data;
 
 /**
  * @ClassName: org.luvx.join.entity
- * @Description:
+ * @Description: 和Score join用
  * @Author: Ren, Xie
  */
 @Data
-public class Result {
+public class Student {
     private Integer id;
     private String  name;
-    private Integer score;
 }

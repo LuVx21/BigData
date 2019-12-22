@@ -1,18 +1,18 @@
-package org.luvx.join;
+package org.luvx.source;
 
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
-import org.luvx.join.entity.Score;
-import org.luvx.join.entity.Student;
+import org.luvx.entity.join.Score;
+import org.luvx.entity.join.Student;
 
 import java.util.Random;
 
 /**
  * @ClassName: org.luvx.join
- * @Description: 造数据
+ * @Description: student score 造数据
  * @Author: Ren, Xie
  */
-public class Source extends RichSourceFunction<Tuple2<Student, Score>> {
+public class StudentScoreSource extends RichSourceFunction<Tuple2<Student, Score>> {
     @Override
     public void run(SourceContext<Tuple2<Student, Score>> ctx) throws Exception {
         for (; ; ) {
@@ -24,7 +24,7 @@ public class Source extends RichSourceFunction<Tuple2<Student, Score>> {
             s.setName("name:" + i);
 
             Score ss = new Score();
-            ss.setEid(i - 1);
+            ss.setId(i - 1);
             ss.setSid(i);
             ss.setScore(i + 1);
 
