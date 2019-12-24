@@ -24,7 +24,7 @@ public class Watermarks1 implements AssignerWithPeriodicWatermarks<LogEvent> {
 
     @Override
     public long extractTimestamp(LogEvent element, long previousElementTimestamp) {
-        long time = element.getTime();
+        long time = element.getEventTime();
         currentMaxTimestamp = Math.max(time, previousElementTimestamp);
         /// getCurrentWatermark().getTimestamp();
         return time;

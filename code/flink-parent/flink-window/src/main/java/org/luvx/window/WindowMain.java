@@ -49,7 +49,7 @@ public class WindowMain {
                     @Override
                     public long extractTimestamp(LogEvent element) {
                         log.info("当前水位线:{}", DateTimeUtils.epochMilli2Time(getCurrentWatermark().getTimestamp()));
-                        return element.getTime();
+                        return element.getEventTime();
                     }
                 }
         );

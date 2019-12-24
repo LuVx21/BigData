@@ -1,9 +1,6 @@
 package org.luvx.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.luvx.common.utils.DateTimeUtils;
 
 /**
@@ -14,17 +11,29 @@ import org.luvx.common.utils.DateTimeUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 public class LogEvent {
     private String ip;
-    private Long   time;
+    private Long   eventTime;
     private String timeZone;
     private String type;
     private String url;
 
+    @Override
+    public String toString() {
+        return "LogEvent{" +
+                "ip='" + ip + '\'' +
+                ", eventTime=" + DateTimeUtils.epochMilli2Time(eventTime) +
+                ", timeZone='" + timeZone + '\'' +
+                ", type='" + type + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
+
     public static LogEvent of(String[] tokens) {
         return LogEvent.builder()
-                .ip(tokens[0]).time(DateTimeUtils.str2EpochMilli(tokens[3])).timeZone(tokens[4])
+                .ip(tokens[0]).eventTime(DateTimeUtils.str2EpochMilli(tokens[3])).timeZone(tokens[4])
                 .type(tokens[5]).url(tokens[6])
                 .build();
     }

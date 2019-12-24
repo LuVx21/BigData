@@ -47,20 +47,35 @@ public class Main {
 
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
+        sql(tEnv, operator);
 
         env.execute("table window");
     }
 
-
+    /**
+     * <pre>
+     * select
+     *   tumble_start(eventTime, interval '10' second) as window_start,
+     *   tumble_end(eventTime, interval '10' second) as window_end,
+     *   sum(cnt)
+     * from log
+     * group by
+     *   tumble(eventTime, interval '10' second)
+     * </pre>
+     *
+     * @param tEnv
+     * @param operator
+     */
     private static void sql(StreamTableEnvironment tEnv, SingleOutputStreamOperator<Log> operator) {
-        Table logT = tEnv.fromDataStream(operator, "eventTime.rowtime, name, cnt");
-        Table result = tEnv.sqlQuery("select tumble_start(eventTime, interval '10' second) as window_start," +
-                "tumble_end(eventTime, interval '10' second) as window_end, sum(cnt) from "
-                + logT + " group by tumble(eventTime, interval '10' second)");
+        // Table logT = tEnv.fromDataStream(operator, "eventTime.rowtime, name, cnt");
+        // Table result = tEnv.sqlQuery("select tumble_start(eventTime, interval '10' second) as window_start," +
+        //         "tumble_end(eventTime, interval '10' second) as window_end, sum(cnt) from "
+        //         + logT + " group by tumble(eventTime, interval '10' second)");
 
-        // tEnv.registerDataStream("log", operator, "eventTime.rowtime, name, cnt");
-        // String sql = "select tumble_start(eventTime, interval '10' second) as window_start, tumble_end(eventTime, interval '10' second) as window_end, sum(cnt) from log group by tumble(eventTime, interval '10' second)";
-        // Table result = tEnv.sqlQuery(sql);
+        tEnv.registerDataStream("log", operator, "eventTime.rowtime, name, cnt");
+        String sql = "select tumble_start(eventTime, interval '10' second) as window_start, tumble_end(eventTime, interval '10' second) as window_end, sum(cnt) " +
+                " from log group by tumble(eventTime, interval '10' second)";
+        Table result = tEnv.sqlQuery(sql);
 
         TypeInformation<Tuple3<Timestamp, Timestamp, Integer>> type =
                 new TypeHint<Tuple3<Timestamp, Timestamp, Integer>>() {
@@ -68,7 +83,6 @@ public class Main {
 
         tEnv.toAppendStream(result, type).print("result");
     }
-
 
     @Data
     @NoArgsConstructor
