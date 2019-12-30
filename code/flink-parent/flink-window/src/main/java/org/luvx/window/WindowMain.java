@@ -42,8 +42,8 @@ import java.util.List;
  */
 @Slf4j
 public class WindowMain {
-    private static final String host = "211.159.175.179";
-    private static final int    port = 59000;
+    private static final String host = "192.168.224.129";
+    private static final int    port = 9000;
 
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
