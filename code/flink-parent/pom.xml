@@ -13,11 +13,9 @@
         <module>flink-common</module>
         <module>flink-entity</module>
         <module>flink-example</module>
-        <module>flink-cep</module>
         <module>flink-connector</module>
         <module>flink-window</module>
         <module>flink-table</module>
-        <module>flink-sub</module>
     </modules>
 
     <properties>
