@@ -77,7 +77,7 @@ public class Main {
                 .itemId(Long.valueOf(tokens[1]))
                 .categoryId(Integer.valueOf(tokens[2]))
                 .behavior(tokens[3])
-                .timestamp(Long.valueOf(tokens[4]))
+                .ts(Long.valueOf(tokens[4]))
                 .build();
     }
 }

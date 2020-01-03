@@ -44,7 +44,7 @@ public class FileMain {
                 new AscendingTimestampExtractor<UserBehaviorEvent>() {
                     @Override
                     public long extractAscendingTimestamp(UserBehaviorEvent element) {
-                        return element.getTimestamp() * 1000;
+                        return element.getTs() * 1000;
                     }
                 }
         );

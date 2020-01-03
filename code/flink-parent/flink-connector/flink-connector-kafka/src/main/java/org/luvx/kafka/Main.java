@@ -59,7 +59,7 @@ public class Main {
                             .itemId(s.getItemId())
                             .categoryId(s.getCategoryId())
                             .behavior(s.getBehavior())
-                            .timestamp(s.getTimestamp() / 1000)
+                            .ts(s.getTs() / 1000)
                             .build();
                 }
         );

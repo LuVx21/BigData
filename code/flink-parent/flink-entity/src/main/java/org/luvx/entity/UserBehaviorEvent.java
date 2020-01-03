@@ -35,5 +35,5 @@ public class UserBehaviorEvent {
     /**
      * 时间戳
      */
-    private Long    timestamp;
+    private Long    ts;
 }

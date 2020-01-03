@@ -23,7 +23,7 @@ public class SinkToMysql extends RichSinkFunction<UserBehaviorEvent> {
         stmt.setLong(2, value.getItemId());
         stmt.setInt(3, value.getCategoryId());
         stmt.setString(4, value.getBehavior());
-        stmt.setLong(5, value.getTimestamp());
+        stmt.setLong(5, value.getTs());
         stmt.executeUpdate();
     }
 

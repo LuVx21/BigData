@@ -31,7 +31,7 @@ public class DataSourceFromMysql extends RichSourceFunction<UserBehaviorEvent> {
                             .itemId(rs.getLong("item_id"))
                             .categoryId(rs.getInt("category_id"))
                             .behavior(rs.getString("behavior"))
-                            .timestamp(rs.getLong("timestamp"))
+                            .ts(rs.getLong("timestamp"))
                             .build();
                     sourceContext.collect(u);
                 }

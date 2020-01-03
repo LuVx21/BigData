@@ -48,7 +48,7 @@ public class KafkaUtils2 {
                 .itemId(2001L)
                 .categoryId(101)
                 .behavior(a[i])
-                .timestamp(System.currentTimeMillis())
+                .ts(System.currentTimeMillis())
                 .build();
     }
 }
