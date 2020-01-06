@@ -52,7 +52,7 @@ public class JoinMain {
      * @param score
      */
     private static DataStream<StudentScore> join(SingleOutputStreamOperator<Student> student, SingleOutputStreamOperator<Score> score) {
-        long size = 10 * 1000;
+        long size = 10_000;
         JoinedStreams<Student, Score> jj = student.join(score);
         DataStream<StudentScore> ss = jj.where(new StudentSelector())
                 .equalTo(new ScoreSelector())

@@ -30,7 +30,7 @@ public class StudentScoreSource extends RichSourceFunction<Tuple2<Student, Score
 
             Tuple2<Student, Score> pair = new Tuple2<>(s, ss);
             ctx.collect(pair);
-            Thread.sleep(10 * 1000);
+            Thread.sleep(10_000);
         }
     }
 

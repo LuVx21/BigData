@@ -20,7 +20,7 @@ public class KafkaUtils2 {
 
     public static void main(String[] args) throws InterruptedException {
         for (; ; ) {
-            Thread.sleep(15 * 1000);
+            Thread.sleep(15_000);
             send();
         }
     }

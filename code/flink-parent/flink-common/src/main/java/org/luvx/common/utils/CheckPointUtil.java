@@ -29,7 +29,7 @@ public class CheckPointUtil {
     private static final String path_linux   = "/data/flink/checkpoint";
 
     public static StreamExecutionEnvironment setCheckpointConfig(StreamExecutionEnvironment env) throws URISyntaxException {
-        env.enableCheckpointing(30 * 1000);
+        env.enableCheckpointing(30_000);
         StateBackend stateBackend = new FsStateBackend(new URI(path_windows), 0);
         env.setStateBackend(stateBackend);
 
@@ -41,7 +41,7 @@ public class CheckPointUtil {
         // 最小间隔 500 ms
         checkpointConfig.setMinPauseBetweenCheckpoints(500);
         // 设置point超时时间, 否则丢弃
-        checkpointConfig.setCheckpointTimeout(60 * 1000);
+        checkpointConfig.setCheckpointTimeout(60_000);
         // 设置point失败时，任务不会 fail, 丢弃point
         /// checkpointConfig.setFailOnCheckpointingErrors(false); // 1.9.1 废弃
         checkpointConfig.setTolerableCheckpointFailureNumber(0);
