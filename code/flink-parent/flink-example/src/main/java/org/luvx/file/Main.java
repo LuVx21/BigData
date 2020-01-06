@@ -43,7 +43,7 @@ public class Main {
                     @Override
                     public UserBehaviorEvent map(String s) throws Exception {
                         String[] tokens = s.split("\\W+");
-                        return userBehavior(tokens);
+                        return UserBehaviorEvent.of(tokens);
                     }
                 }
         );
@@ -63,21 +63,11 @@ public class Main {
                     public void flatMap(String s, Collector<UserBehaviorEvent> collector) throws Exception {
                         String[] tokens = s.split("\\W+");
                         if (tokens.length > 1) {
-                            collector.collect(userBehavior(tokens));
+                            collector.collect(UserBehaviorEvent.of(tokens));
                         }
                     }
                 }
         );
         operator.print("222");
-    }
-
-    private static UserBehaviorEvent userBehavior(String[] tokens) {
-        return UserBehaviorEvent.builder()
-                .userId(Long.valueOf(tokens[0]))
-                .itemId(Long.valueOf(tokens[1]))
-                .categoryId(Integer.valueOf(tokens[2]))
-                .behavior(tokens[3])
-                .ts(Long.valueOf(tokens[4]))
-                .build();
     }
 }

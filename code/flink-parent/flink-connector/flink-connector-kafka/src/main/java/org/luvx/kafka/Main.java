@@ -54,13 +54,9 @@ public class Main {
     private static void map1(SingleOutputStreamOperator<UserBehaviorEvent> stream) {
         SingleOutputStreamOperator<UserBehaviorEvent> operator = stream.map(
                 s -> {
-                    return UserBehaviorEvent.builder()
-                            .userId(s.getUserId())
-                            .itemId(s.getItemId())
-                            .categoryId(s.getCategoryId())
-                            .behavior(s.getBehavior())
-                            .ts(s.getTs() / 1000)
-                            .build();
+                    UserBehaviorEvent u = UserBehaviorEvent.of(s);
+                    u.setTs(s.getTs() / 1000);
+                    return u;
                 }
         );
         operator.print();
