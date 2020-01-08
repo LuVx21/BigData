@@ -47,6 +47,7 @@ public class JoinMain {
 
     /**
      * 合并两个流为元素为新对象的流
+     * join 和 coGroup 什么区别?
      *
      * @param student
      * @param score
