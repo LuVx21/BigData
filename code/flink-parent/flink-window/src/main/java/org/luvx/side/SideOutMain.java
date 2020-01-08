@@ -11,16 +11,14 @@ import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 import org.luvx.entity.LogEvent;
 
-import java.util.Objects;
-
 /**
  * @ClassName: org.luvx.side
  * @Description:
  * @Author: Ren, Xie
  */
 public class SideOutMain {
-    private static final String host = "211.159.175.179";//""192.168.224.129";
-    private static final int    port = 59000;
+    private static final String host = "192.168.224.129";
+    private static final int    port = 9000;
 
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
