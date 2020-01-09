@@ -8,6 +8,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
+import org.luvx.common.value.Const;
 import org.luvx.entity.WordWithCount;
 
 /**
@@ -16,12 +17,9 @@ import org.luvx.entity.WordWithCount;
  * @Author: Ren, Xie
  */
 public class WordCountMain {
-    private static final String host = "192.168.224.129";
-    private static final int    port = 9000;
-
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStreamSource<String> source = env.socketTextStream(host, port);
+        DataStreamSource<String> source = env.socketTextStream(Const.HOST, Const.PORT);
 
         // count0(source);
         count1(source);

@@ -11,6 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.luvx.common.value.Const;
 import org.luvx.entity.LogEvent;
 
 import java.sql.Timestamp;
@@ -21,12 +22,9 @@ import java.sql.Timestamp;
  * @Author: Ren, Xie
  */
 public class Main1 {
-    private static final String host = "192.168.224.129";
-    private static final int    port = 9000;
-
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStreamSource<String> source = env.socketTextStream(host, port, "\n");
+        DataStreamSource<String> source = env.socketTextStream(Const.HOST, Const.PORT, "\n");
 
         SingleOutputStreamOperator<LogEvent> operator = source.map(
                 new MapFunction<String, LogEvent>() {

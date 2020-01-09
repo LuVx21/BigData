@@ -2,11 +2,11 @@ package org.luvx.checkpoint;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.luvx.common.utils.CheckPointUtil;
+import org.luvx.common.value.Const;
 import org.luvx.entity.LogEvent;
 
 /**
@@ -19,12 +19,9 @@ import org.luvx.entity.LogEvent;
 @Slf4j
 public class Main {
 
-    private static final String host = "192.168.224.129";
-    private static final int    port = 9000;
-
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStreamSource<String> stream = env.socketTextStream(host, port, "\n");
+        DataStreamSource<String> stream = env.socketTextStream(Const.HOST, Const.PORT, "\n");
         env.setParallelism(1);
 
         SingleOutputStreamOperator<LogEvent> operator = stream.map(

@@ -14,6 +14,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 import org.luvx.common.utils.DateTimeUtils;
+import org.luvx.common.value.Const;
 import org.luvx.entity.LogEvent;
 
 import java.util.ArrayList;
@@ -40,12 +41,9 @@ import java.util.List;
  */
 @Slf4j
 public class WindowMain {
-    private static final String host = "192.168.224.129";
-    private static final int    port = 9000;
-
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStreamSource<String> stream = env.socketTextStream(host, port, "\n");
+        DataStreamSource<String> stream = env.socketTextStream(Const.HOST, Const.PORT, "\n");
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         env.setParallelism(1);
 
