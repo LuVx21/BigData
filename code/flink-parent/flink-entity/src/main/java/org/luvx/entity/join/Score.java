@@ -10,7 +10,10 @@ import lombok.Data;
 @Data
 public class Score {
     private Integer id;
-    /**student 的 id*/
+    private String  name;
+    /**
+     * student 的 id
+     */
     private Integer sid;
     private Integer score;
 }
