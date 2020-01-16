@@ -1,18 +1,15 @@
 package org.luvx.join;
 
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
-import org.luvx.common.value.Const;
-import org.luvx.entity.LogEvent;
+import org.apache.flink.types.Row;
+import org.luvx.common.utils.StringUtils;
 import org.luvx.entity.join.Score;
 import org.luvx.entity.join.Student;
-import org.luvx.entity.join.StudentScore;
-import org.luvx.source.StudentScoreSource;
 
 /**
  * @ClassName: org.luvx.join
@@ -31,14 +28,18 @@ import org.luvx.source.StudentScoreSource;
  */
 public class JoinMain1 {
 
-    private static final String host  = "127.0.0.1";
-    private static final int    port  = 9000;
-    private static final int    port1 = 9001;
+    private static final String host  = "211.159.175.179";
+    private static final int    port  = 59000;
+    private static final int    port1 = 59001;
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
-        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
+        EnvironmentSettings settings = EnvironmentSettings.newInstance()
+                .useBlinkPlanner()
+                .inStreamingMode()
+                .build();
+        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env, settings);
 
         SingleOutputStreamOperator<Student> student = env.socketTextStream(host, port, "\n")
                 .map(new MapFunction<String, Student>() {
@@ -69,11 +70,30 @@ public class JoinMain1 {
                 );
 
         /// sql
-        tEnv.registerDataStream("student", student, "id, name");
-        tEnv.registerDataStream("score", score, "id, name, sid, score");
-        Table t = tEnv.sqlQuery("select sum(t2.score) from student t1 left join score t2 on t1.id = t2.sid");
+        tEnv.registerDataStream("student", student, "id, name, sTime, proctime.proctime");
+        tEnv.registerDataStream("score", score, "id, name, sid, score, ssTime");
 
-        tEnv.toRetractStream(t, Integer.class).print("result");
+        // Table t = tEnv.sqlQuery("select sum(t2.score) from student t1 inner join score t2 on t1.id = t2.sid");
+
+        String sql = StringUtils.merge(
+                " select",
+                "     sum(t2.score) as cnt",
+                " from",
+                " (",
+                "     select *",
+                "     from",
+                "         (",
+                "             select",
+                "                 *, row_number() over (partition by id order by proctime desc) as row_num",
+                "             from student",
+                "         )",
+                "     where row_num = 1",
+                " ) as t1 inner join score t2 on t1.id = t2.sid"
+        );
+
+        Table t = tEnv.sqlQuery(sql);
+
+        tEnv.toRetractStream(t, Row.class).print("result");
 
         env.execute("table join");
     }

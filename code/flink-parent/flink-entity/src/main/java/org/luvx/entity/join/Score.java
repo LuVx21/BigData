@@ -16,4 +16,5 @@ public class Score {
      */
     private Integer sid;
     private Integer score;
+    private long    ssTime;
 }
