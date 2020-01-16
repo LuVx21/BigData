@@ -1,4 +1,4 @@
-package org.luvx.connector.file;
+package org.luvx.file;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;

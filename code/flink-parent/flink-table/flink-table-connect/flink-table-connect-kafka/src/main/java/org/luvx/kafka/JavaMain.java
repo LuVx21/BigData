@@ -1,4 +1,4 @@
-package org.luvx.connector.kafka;
+package org.luvx.kafka;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;

@@ -1,4 +1,4 @@
-package org.luvx.connector.kafka;
+package org.luvx.kafka;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
