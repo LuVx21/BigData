@@ -1,4 +1,4 @@
-package org.luvx.kafka;
+package org.luvx.kafka.main;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -17,7 +17,7 @@ import org.luvx.entity.UserBehaviorEvent1;
  * @Description: kafka -> mysql
  * @Author: Ren, Xie
  */
-public class JavaMain {
+public class KafkaMain1 {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         EnvironmentSettings settings = EnvironmentSettings.newInstance()

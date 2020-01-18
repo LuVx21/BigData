@@ -1,4 +1,4 @@
-package org.luvx.kafka;
+package org.luvx.kafka.main;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
@@ -10,7 +10,7 @@ import org.luvx.common.utils.FileReadUtils;
  * @Description: kafka -> mysql
  * @Author: Ren, Xie
  */
-public class DdlMain {
+public class KafkaMain2 {
 
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
