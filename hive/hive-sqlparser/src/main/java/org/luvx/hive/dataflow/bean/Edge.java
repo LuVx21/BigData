@@ -1,4 +1,4 @@
-package org.luvx.hive.bean;
+package org.luvx.hive.dataflow.bean;
 
 import lombok.Data;
 

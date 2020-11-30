@@ -1,4 +1,4 @@
-package org.luvx.hive;
+package org.luvx.hive.dataflow;
 
 import com.alibaba.fastjson.JSON;
 import org.luvx.hive.bean.Edge;

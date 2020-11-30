@@ -1,4 +1,4 @@
-package org.luvx.hive;
+package org.luvx.hive.dataflow;
 
 import org.apache.hadoop.hive.ql.tools.LineageInfo;
 
