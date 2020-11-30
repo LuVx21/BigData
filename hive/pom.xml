@@ -18,6 +18,7 @@
     <modules>
         <module>hive-io</module>
         <module>hive-sqlparser</module>
+        <module>hive-dataflow</module>
     </modules>
 
     <dependencies>
