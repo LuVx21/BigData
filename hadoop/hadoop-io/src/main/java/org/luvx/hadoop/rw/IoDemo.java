@@ -1,4 +1,4 @@
-package org.luvx.hadoop;
+package org.luvx.hadoop.rw;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -11,12 +11,9 @@ import java.io.*;
 import java.net.URI;
 
 /**
- * @ClassName: org.luvx.hadoop
- * @Description:
- * @Author: Ren, Xie
- * @Date: 2019/11/4 11:43
+ * @author Ren, Xie
  */
-public class Demo {
+public class IoDemo {
     private static final String url = "hdfs://192.168.0.229:8020";
 
     public static void print() throws IOException {
