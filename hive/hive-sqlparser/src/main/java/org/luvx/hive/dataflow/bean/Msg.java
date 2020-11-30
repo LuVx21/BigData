@@ -5,10 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @ClassName: org.luvx.hive
- * @Description:
- * @Author: Ren, Xie
- * @Date: 2019/11/11 14:35
+ * @author Ren, Xie
  */
 @Data
 public class Msg {

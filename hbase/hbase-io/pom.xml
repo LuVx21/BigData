@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>org.luvx</groupId>
-        <artifactId>hive-parent</artifactId>
+        <artifactId>hbase-parent</artifactId>
         <version>1.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>hive-sqlparser</artifactId>
+    <artifactId>hbase-io</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -21,6 +21,13 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>

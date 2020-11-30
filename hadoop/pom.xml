@@ -10,14 +10,13 @@
         <relativePath/>
     </parent>
 
-    <artifactId>hive-parent</artifactId>
+    <artifactId>hadoop-parent</artifactId>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
 
     <modules>
-        <module>hive-io</module>
-        <module>hive-sqlparser</module>
+        <module>hadoop-io</module>
     </modules>
 
     <dependencies>

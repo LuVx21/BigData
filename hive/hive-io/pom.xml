@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>hive-sqlparser</artifactId>
+    <artifactId>hive-io</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>

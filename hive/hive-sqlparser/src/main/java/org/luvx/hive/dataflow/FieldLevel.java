@@ -1,17 +1,14 @@
 package org.luvx.hive.dataflow;
 
 import com.alibaba.fastjson.JSON;
-import org.luvx.hive.bean.Edge;
-import org.luvx.hive.bean.Msg;
-import org.luvx.hive.bean.Vertice;
+import org.luvx.hive.dataflow.bean.Edge;
+import org.luvx.hive.dataflow.bean.Msg;
+import org.luvx.hive.dataflow.bean.Vertice;
 
 import java.util.List;
 
 /**
- * @ClassName: org.luvx
- * @Description: 数据血缘字段级别
- * @Author: Ren, Xie
- * @Date: 2019/11/1 11:41
+ * @author Ren, Xie
  */
 public class FieldLevel {
     public static void main(String[] args) {

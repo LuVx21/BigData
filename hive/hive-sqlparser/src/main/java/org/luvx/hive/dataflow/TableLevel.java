@@ -3,10 +3,7 @@ package org.luvx.hive.dataflow;
 import org.apache.hadoop.hive.ql.tools.LineageInfo;
 
 /**
- * @ClassName: org.luvx
- * @Description:
- * @Author: Ren, Xie
- * @Date: 2019/11/1 11:41
+ * @author Ren, Xie
  */
 public class TableLevel {
     public static void main(String[] args) throws Exception {
