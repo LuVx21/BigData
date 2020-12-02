@@ -23,7 +23,8 @@ public class PropertiesUtils {
     }
 
     public static Properties load(String path) {
-        try (InputStream in = ClassUtils.getClassLoader().getResourceAsStream(path)) {
+        ClassLoader loader = PropertiesUtils.class.getClassLoader();
+        try (InputStream in = loader.getResourceAsStream(path)) {
             Properties props = new Properties();
             props.load(in);
             return props;

@@ -14,22 +14,26 @@ import java.util.Properties;
  */
 @Slf4j
 public class HadoopConnectionUtils {
+    public static final String CONFIG = "hadoop.properties";
+
     public static FileSystem getFileSystem() {
-        Properties props = PropertiesUtils.load("hadoop.properties");
+        Properties props = PropertiesUtils.load(CONFIG);
         Objects.requireNonNull(props, "加载配置文件异常");
 
-        String root = props.getProperty("hadoop.root");
+        String root = props.getProperty("hadoop.url");
         String user = props.getProperty("hadoop.user");
         System.setProperty("hadoop.home.dir", props.getProperty("hadoop.home.dir"));
 
-        FileSystem fileSystem = null;
+        Configuration conf = new Configuration();
+        conf.set("dfs.client.use.datanode.hostname", "true");
+        FileSystem fs = null;
         try {
-            fileSystem = FileSystem.get(URI.create(root), new Configuration(), user);
+            fs = FileSystem.get(URI.create(root), conf, user);
         } catch (IOException | InterruptedException e) {
-            log.error("获取dfs异常: {}", e);
+            log.error("获取dfs异常", e);
             return null;
         }
-        return fileSystem;
+        return fs;
     }
 }
 

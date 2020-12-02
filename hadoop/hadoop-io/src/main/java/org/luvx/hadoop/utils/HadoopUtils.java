@@ -7,52 +7,50 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * @ClassName: org.luvx.hadoop
- * @Description:
- * @Author: Ren, Xie
- * @Date: 2019/11/13 16:46
+ * @author Ren, Xie
  */
 @Slf4j
 public class HadoopUtils {
 
-    public static boolean makeDirectory(FileSystem fileSystem, String path) throws IOException {
+    public static void mkdir(FileSystem fs, String path) throws IOException {
         if (!path.startsWith("/")) {
-            return false;
+            return;
         }
-        fileSystem.mkdirs(new Path(fileSystem.getUri() + path));
-        return true;
+        fs.mkdirs(new Path(path));
     }
 
-    public static void uploadData(FileSystem fileSystem, String path, String path_local) throws IOException {
-        final FSDataOutputStream out = fileSystem.create(new Path(fileSystem.getUri() + path));
-        FileInputStream in = new FileInputStream(path_local);
-        IOUtils.copyBytes(in, out, 1024, true);
-        IOUtils.closeStreams(in, out);
+    public static void uploadData(FileSystem fs, String localPath, String hdfsPath) throws IOException {
+        FSDataOutputStream fos = fs.create(new Path(hdfsPath),
+                () -> {
+                    // 带进度提醒信息
+                    System.out.print(".");
+                }
+        );
+        InputStream in = new BufferedInputStream(new FileInputStream(localPath));
+        IOUtils.copyBytes(in, fos, 1024, true);
     }
 
-    public static void print(FileSystem fileSystem, String path) throws IOException {
-        String file = fileSystem.getUri() + path;
-        FSDataInputStream is = fileSystem.open(new Path(file));
-        byte[] buff = new byte[1024];
-        int length = 0;
-        while ((length = is.read(buff)) != -1) {
-            System.out.println(new String(buff, 0, length));
+    public static void print(FileSystem fs, String path) throws IOException {
+        try (FSDataInputStream is = fs.open(new Path(path))) {
+            IOUtils.copyBytes(is, System.out, 1024, true);
         }
-        IOUtils.closeStreams(is);
     }
 
-    public static void downloadData(FileSystem fileSystem, String path, String path_local) throws IOException {
-        final FSDataInputStream in = fileSystem.open(new Path(fileSystem.getUri() + path));
-        OutputStream os = new FileOutputStream(new File(path_local));
-        IOUtils.copyBytes(in, os, 1024, true);
-        IOUtils.closeStreams(os, in);
+    public static void downloadData(FileSystem fs, String hdfsPath, String localPath) throws IOException {
+        log.info("{} -> {}", hdfsPath, localPath);
+        Path from = new Path(hdfsPath);
+        Path to = new Path(localPath);
+        fs.copyToLocalFile(from, to);
     }
 
-    public static void deleteFile(FileSystem fileSystem, String path) throws IOException {
-        fileSystem.delete(new Path(fileSystem.getUri() + path), true);
+    public static void deleteFile(FileSystem fs, String path) throws IOException {
+        fs.delete(new Path(path), true);
     }
 }
 
