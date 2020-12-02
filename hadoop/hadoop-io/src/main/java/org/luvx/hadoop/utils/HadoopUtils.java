@@ -50,7 +50,11 @@ public class HadoopUtils {
     }
 
     public static void deleteFile(FileSystem fs, String path) throws IOException {
-        fs.delete(new Path(path), true);
+        log.info("delete:{}", path);
+        Path p = new Path(path);
+        if (fs.exists(p)) {
+            fs.delete(new Path(path), true);
+        }
     }
 }
 

@@ -17,6 +17,11 @@ public class HadoopConnectionUtils {
     public static final String CONFIG = "hadoop.properties";
 
     public static FileSystem getFileSystem() {
+        Configuration conf = getConfig();
+        return getFileSystem(conf);
+    }
+
+    public static FileSystem getFileSystem(Configuration conf) {
         Properties props = PropertiesUtils.load(CONFIG);
         Objects.requireNonNull(props, "加载配置文件异常");
 
@@ -24,8 +29,6 @@ public class HadoopConnectionUtils {
         String user = props.getProperty("hadoop.user");
         System.setProperty("hadoop.home.dir", props.getProperty("hadoop.home.dir"));
 
-        Configuration conf = new Configuration();
-        conf.set("dfs.client.use.datanode.hostname", "true");
         FileSystem fs = null;
         try {
             fs = FileSystem.get(URI.create(root), conf, user);
@@ -34,6 +37,12 @@ public class HadoopConnectionUtils {
             return null;
         }
         return fs;
+    }
+
+    public static Configuration getConfig() {
+        Configuration conf = new Configuration();
+        conf.set("dfs.client.use.datanode.hostname", "true");
+        return conf;
     }
 }
 
