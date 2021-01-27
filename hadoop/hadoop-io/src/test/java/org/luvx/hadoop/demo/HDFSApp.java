@@ -1,15 +1,17 @@
 package org.luvx.hadoop.demo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
+import org.apache.hadoop.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.luvx.hadoop.utils.HadoopConnectionUtils;
-import org.luvx.hadoop.utils.HadoopUtils;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * Hadoop HDFS Java API 操作
@@ -17,12 +19,12 @@ import org.luvx.hadoop.utils.HadoopUtils;
  * @author Ren, Xie
  */
 @Slf4j
-public class IoTest {
+public class HDFSApp {
 
     private FileSystem fs = null;
 
-    private final String HD_ROOT_DIR    = "/Users/hadoop/";
-    private final String LOCAL_ROOT_DIR = "/Users/renxie/";
+    private final String HD_ROOT_DIR    = "/Users/hadoop/admin/";
+    private final String LOCAL_ROOT_DIR = "/Users/renxie/admin/";
 
     @Before
     public void before() {
@@ -41,7 +43,9 @@ public class IoTest {
      */
     @Test
     public void mkdir() throws Exception {
-        HadoopUtils.mkdir(fs, HD_ROOT_DIR + "admin");
+        System.out.println(fs.getUri() );
+        fs.mkdirs(new Path(fs.getUri() + HD_ROOT_DIR + "11"));
+        // fs.mkdirs(new Path(HD_ROOT_DIR));
     }
 
     /**
@@ -60,7 +64,9 @@ public class IoTest {
      */
     @Test
     public void cat() throws Exception {
-        HadoopUtils.print(fs, HD_ROOT_DIR + "1.txt");
+        try (FSDataInputStream in = fs.open(new Path(HD_ROOT_DIR + "1.txt"))) {
+            IOUtils.copyBytes(in, System.out, 1024);
+        }
     }
 
     /**
@@ -88,9 +94,16 @@ public class IoTest {
      */
     @Test
     public void copyFromLocalFileWithProgress() throws Exception {
-        String localPath = LOCAL_ROOT_DIR + "jdk-11.0.4_linux-x64_bin.tar.gz";
-        String hdfsPath = HD_ROOT_DIR + "jdk-11.0.4_linux-x64_bin.tar.gz";
-        HadoopUtils.uploadData(fs, localPath, hdfsPath);
+        String fileName = LOCAL_ROOT_DIR + "jdk-11.0.4_linux-x64_bin.tar.gz";
+        InputStream in = new BufferedInputStream(new FileInputStream(new File(fileName)));
+        FSDataOutputStream fos = fs.create(new Path(HD_ROOT_DIR + "jdk-11.0.4_linux-x64_bin.tar.gz"),
+                () -> {
+                    // 带进度提醒信息
+                    System.out.print(".");
+                }
+        );
+
+        IOUtils.copyBytes(in, fos, 4096);
     }
 
     /**
@@ -98,9 +111,9 @@ public class IoTest {
      */
     @Test
     public void copyToLocalFile() throws Exception {
-        String hdfsPath = HD_ROOT_DIR + "1.txt";
-        String localPath = LOCAL_ROOT_DIR + "2.txt";
-        HadoopUtils.downloadData(fs, hdfsPath, localPath);
+        Path hdfsPath = new Path(HD_ROOT_DIR + "1.txt");
+        Path localPath = new Path(LOCAL_ROOT_DIR + "2.txt");
+        fs.copyToLocalFile(hdfsPath, localPath);
     }
 
     /**
@@ -123,6 +136,6 @@ public class IoTest {
      */
     @Test
     public void delete() throws Exception {
-        HadoopUtils.deleteFile(fs, HD_ROOT_DIR);
+        fs.delete(new Path(HD_ROOT_DIR), true);
     }
 }
