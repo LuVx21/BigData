@@ -16,7 +16,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <fastjson.version>1.2.60</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
     </properties>
 
     <dependencies>
